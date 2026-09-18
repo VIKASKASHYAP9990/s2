@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08111f" />
+    <title>waveStockAi — Understand the market before you invest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">B<span>×</span></div>
+          <div><div class="brand-name">waveStock<span>Ai</span></div><div class="brand-sub">Market intelligence</div></div>
+        </div>
+        <div class="demo-pill"><span class="live-dot"></span> DEMO MODE <span class="demo-cap">₹1L</span></div>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <div class="nav-label">Workspace</div>
+          <button class="nav-item active" data-view="dashboard"><span class="nav-icon">⌂</span> Dashboard</button>
+          <button class="nav-item" data-view="markets"><span class="nav-icon">↗</span> Markets</button>
+          <button class="nav-item" data-view="watchlist"><span class="nav-icon">☆</span> Watchlist <span class="nav-count">8</span></button>
+          <button class="nav-item" data-view="compare"><span class="nav-icon">◫</span> Compare</button>
+          <button class="nav-item" data-view="screener"><span class="nav-icon">≡</span> Screener</button>
+          <div class="nav-label section-gap">Decisions</div>
+          <button class="nav-item" data-view="portfolio"><span class="nav-icon">▥</span> Portfolio</button>
+          <button class="nav-item" data-view="risk"><span class="nav-icon">◈</span> Risk Center</button>
+          <button class="nav-item" data-view="paper"><span class="nav-icon">⇄</span> Paper Trading</button>
+          <button class="nav-item" data-view="backtest"><span class="nav-icon">◒</span> Backtesting</button>
+          <div class="nav-label section-gap">Intelligence</div>
+          <button class="nav-item" data-view="copilot"><span class="nav-icon">✦</span> AI Copilot <span class="ai-chip">BETA</span></button>
+          <button class="nav-item" data-view="alerts"><span class="nav-icon">♧</span> Alerts</button>
+        </nav>
+        <div class="sidebar-foot"><div class="foot-line"><span class="status-dot"></span> Provider status <strong>Delayed</strong></div><div class="foot-note">Yahoo Finance · fallback ready</div><button class="settings-btn" data-view="settings">⚙ Settings</button></div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar">
+          <div class="mobile-brand"><div class="brand-mark">w<span>×</span></div><div class="brand-name">waveStock<span>Ai</span></div></div>
+          <div class="global-search"><span>⌕</span><input id="globalSearch" placeholder="Search Indian stocks, sectors, symbols..." autocomplete="off" /><kbd>⌘ K</kbd><div id="searchResults" class="search-results"></div></div>
+          <div class="top-actions"><button class="icon-button" title="Notifications">♧<i></i></button><button class="profile-button"><span class="avatar">AK</span><span class="profile-name">Arjun Kapoor</span><span>⌄</span></button></div>
+        </header>
+        <div id="app" class="page-wrap"></div>
+      </main>
+    </div>
+    <div id="toast" class="toast"></div>
+    <div id="auth-screen" class="auth-screen" aria-label="waveStockAi sign in">
+      <div class="auth-card">
+        <div class="auth-logo">w<span>×</span></div>
+        <div class="auth-brand">waveStock<span>Ai</span></div>
+        <div class="auth-kicker">INDIAN MARKET INTELLIGENCE</div>
+        <h1>Welcome to waveStockAi</h1>
+        <p class="auth-copy">Sign in to manage your watchlists, portfolio research and paper trades.</p>
+        <button id="google-login" class="google-login" type="button">
+          <span class="google-icon">G</span>
+          <span>Continue with Google</span>
+        </button>
+        <button id="guest-login" class="guest-login" type="button">Continue as guest</button>
+        <p id="auth-status" class="auth-status">Demo mode · no real trades or money are connected.</p>
+        <div class="auth-legal">By continuing, you agree to use waveStockAi for educational and research purposes.</div>
+      </div>
+    </div>
+    <style>
+      .auth-screen{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 0%,#173354 0,#07101d 58%);color:var(--text)}
+      .auth-card{width:min(100%,430px);padding:42px 38px 32px;text-align:center;background:rgba(13,25,41,.96);border:1px solid #28415d;border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.45)}
+      .auth-logo{width:58px;height:58px;margin:0 auto 15px;display:grid;place-items:center;border-radius:16px;background:var(--green);color:#031a18;font-size:34px;font-weight:800;box-shadow:0 0 28px rgba(39,215,155,.24)}
+      .auth-logo span{font-size:.68em}.auth-brand{font-size:23px;font-weight:800;letter-spacing:-.05em;color:var(--white)}.auth-brand span{color:var(--green)}
+      .auth-kicker{margin-top:10px;color:var(--green);font:10px 'DM Mono';letter-spacing:.16em}.auth-card h1{margin:30px 0 10px;color:var(--white);font-size:26px;letter-spacing:-.04em}.auth-copy{margin:0 auto 25px;max-width:310px;color:var(--muted2);font-size:12px;line-height:1.7}
+      .google-login,.guest-login{width:100%;height:46px;border-radius:8px;font-weight:700}.google-login{display:flex;align-items:center;justify-content:center;gap:11px;border:1px solid #d7dce3;background:#fff;color:#202124}.google-login:hover{background:#f1f3f4}.google-icon{font:700 18px Arial;color:#4285f4}.guest-login{margin-top:10px;border:1px solid var(--line);background:transparent;color:var(--muted2)}.guest-login:hover{border-color:var(--green);color:var(--green)}.auth-status{min-height:17px;margin:17px 0 0;color:var(--muted);font-size:10px}.auth-legal{margin-top:25px;color:#637b92;font-size:9px;line-height:1.6}
+      body.authenticated #auth-screen{display:none}
+      @media(max-width:520px){.auth-card{padding:34px 22px 27px}.auth-card h1{font-size:23px}}
+      .reliability-banner{display:flex;align-items:center;gap:13px;margin:0 0 16px;padding:11px 13px;border:1px solid #31546d;border-radius:9px;background:#0b1c2e;color:var(--muted2)}
+      .reliability-icon{width:29px;height:29px;display:grid;place-items:center;border-radius:7px;background:#143b4b;color:#75d9ff;font:15px 'DM Mono'}.reliability-copy{min-width:0;flex:1}.reliability-copy b{display:block;color:var(--white);font-size:11px}.reliability-copy span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:3px;font-size:10px}.reliability-meta{color:#7dc7e7;font:10px 'DM Mono';white-space:nowrap}.reliability-refresh{border:1px solid #31546d;border-radius:6px;background:transparent;color:#a9d9ed;padding:6px 8px;font:10px 'DM Mono'}.reliability-refresh:hover{border-color:var(--green);color:var(--green)}
+      .provider-health{border:1px solid #25425c;background:#0d1c2d;color:#afd2e4}.provider-health[data-status="unavailable"]{border-color:#6c4651;color:#ffb4b9}.provider-health[data-status="stale"]{border-color:#715d36;color:#f7cf81}@media(max-width:720px){.reliability-banner{align-items:flex-start;flex-wrap:wrap}.reliability-meta{width:100%}}
+    </style>
+    <script src="app.js"></script>
+    <script>
+      (() => {
+        const replaceBrand = () => {
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          let node;
+          while (node = walker.nextNode()) {
+            node.nodeValue = node.nodeValue.replaceAll('BharatX', 'waveStockAi').replaceAll('BHARATX', 'WAVESTOCKAI');
+          }
+        };
+        replaceBrand();
+        new MutationObserver(replaceBrand).observe(document.getElementById('app'), { childList: true, subtree: true });
+      })();
+    </script>
+    <script>
+      (() => {
+        const auth = document.getElementById('auth-screen');
+        const status = document.getElementById('auth-status');
+        const finish = (message) => {
+          localStorage.setItem('wavestockai-authenticated', 'demo');
+          document.body.classList.add('authenticated');
+          if (message) status.textContent = message;
+        };
+        if (localStorage.getItem('wavestockai-authenticated')) document.body.classList.add('authenticated');
+        document.getElementById('guest-login').addEventListener('click', () => finish('Signed in as guest · demo mode active.'));
+        document.getElementById('google-login').addEventListener('click', () => {
+          status.textContent = 'Google OAuth is not connected yet. Continue as guest to preview the app.';
+        });
+      })();
+    </script>
+    <script>
+      (() => {
+        const state = { status: 'stale', source: 'Validated demo cache', checkedAt: Date.now() };
+        const apiBase = window.WAVESTOCKAI_API_URL || '';
+        const time = () => new Intl.DateTimeFormat('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date(state.checkedAt));
+        const healthLabel = () => state.status === 'live' ? 'LIVE · VERIFIED' : state.status === 'unavailable' ? 'UNAVAILABLE · NO QUOTE' : 'DELAYED · LAST GOOD';
+        const mount = () => {
+          const actions = document.querySelector('.top-actions');
+          if (actions && !actions.querySelector('[data-reliability-health]')) actions.insertAdjacentHTML('afterbegin', '<button class="icon-button provider-health" data-reliability-health data-status="stale" title="Market data reliability">◌</button>');
+          const app = document.getElementById('app');
+          if (!app || app.querySelector('#reliability-banner')) return;
+          app.insertAdjacentHTML('afterbegin', `<section id="reliability-banner" class="reliability-banner" role="status"><div class="reliability-icon">◌</div><div class="reliability-copy"><b>Reliable data mode · ${healthLabel()}</b><span>Source: ${state.source} · prices are labelled with freshness so stale values are never presented as live.</span></div><div class="reliability-meta">Checked ${time()} IST</div><button class="reliability-refresh" type="button" data-reliability-refresh>↻ Check feeds</button></section>`);
+          const button = document.querySelector('[data-reliability-health]');
+          if (button) button.dataset.status = state.status;
+        };
+        const setHealth = (health) => {
+          state.status = health.status === 'resilient' ? 'live' : health.status === 'unavailable' ? 'unavailable' : 'stale';
+          state.source = health.status === 'resilient' ? 'Primary + secondary provider chain' : health.status === 'unavailable' ? 'No provider is configured' : 'One provider configured · fallback protection active';
+          state.checkedAt = Date.now();
+        };
+        const checkFeeds = async () => {
+          const button = document.querySelector('[data-reliability-refresh]');
+          if (button) button.textContent = 'Checking…';
+          try {
+            if (!apiBase) throw new Error('API not configured in this local demo');
+            const response = await fetch(`${apiBase.replace(/\/$/, '')}/market/health`);
+            if (!response.ok) throw new Error('Health endpoint unavailable');
+            const payload = await response.json();
+            setHealth(payload.data || {});
+          } catch {
+            state.status = 'stale';
+            state.source = 'Validated demo cache · live feed not connected';
+            state.checkedAt = Date.now();
+          }
+          const old = document.getElementById('reliability-banner');
+          if (old) old.remove();
+          mount();
+          if (typeof toast === 'function') toast(`Feed check complete · ${healthLabel()}`);
+        };
+        document.addEventListener('click', (event) => {
+          if (event.target.closest('[data-reliability-refresh],[data-reliability-health]')) checkFeeds();
+        });
+        new MutationObserver(mount).observe(document.getElementById('app'), { childList: true, subtree: true });
+        mount();
+      })();
+    </script>
+  </body>
+</html>
